@@ -40,9 +40,23 @@ namespace HostsFileEditor
                 }
             //}
             Console.WriteLine("\n");
-            Console.WriteLine("Press a number for more actions, \"B\" to backup, or \"N\" for a new entry.");
+            Console.WriteLine("Press a number for more actions, \"B\" to backup, \"N\" for a new entry, or \"E\" to exit.");
             string input = Console.ReadKey().KeyChar.ToString();
-            
+
+            if (input == "E" || input == "e")
+            {
+                Console.Clear();
+                Console.Write("Are you sure you wish to exit? (Y/N)");
+                switch (Console.ReadKey().Key)
+                {
+                    case ConsoleKey.Y:
+                        Environment.Exit(0);
+                        break;
+                    case ConsoleKey.N:
+                        Main(hostsFile);
+                        break;
+                }
+            }
             if (input == "0")
             {
                 if (pages > page)
@@ -58,10 +72,10 @@ namespace HostsFileEditor
             }
 
             if (int.TryParse(input, out int parsedInput)) {
-                parsedInput =  parsedInput - 2 + (page * 8);
-                if (parsedInput < hostsFile.hostsEntries.Count)
+                int pageCorrectedInput =  parsedInput - 2 + (page * 8);
+                if (pageCorrectedInput < hostsFile.hostsEntries.Count && parsedInput != -1)
                 {
-                    EntryDetails(hostsFile.hostsEntries[parsedInput]);
+                    EntryDetails(hostsFile.hostsEntries[pageCorrectedInput]);
                 }
                 else
                 {
@@ -100,9 +114,9 @@ namespace HostsFileEditor
             }
             else
             {
-                Console.WriteLine("Invalid URL. Press any key to try again.");
+                Console.WriteLine("Invalid URL. Press any key to return to main menu.");
                 Console.ReadKey();
-                NewEntry(hostsFile);
+                Main(hostsFile);
             }
 
             Console.WriteLine($"Please enter the IP you wish to map {URLInput} to.");
@@ -119,9 +133,9 @@ namespace HostsFileEditor
             }
             else
             {
-                Console.WriteLine("Invalid IP. Press any key to try again.");
+                Console.WriteLine("Invalid IP. Press any key to return to main menu.");
                 Console.ReadKey();
-                NewEntry(hostsFile);
+                Main(hostsFile);
             }
         }
 
@@ -134,14 +148,19 @@ namespace HostsFileEditor
             {
                 case ConsoleKey.U:
                     Console.Clear();
-                    Console.Write($"Please enter the URL you would like to replace this entry?" + "\n");
+                    Console.Write($"Please enter the URL you would like to replace this entry." + "\n");
                     Regex regex = new Regex(@"(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)");
 
                     string URLInput = Console.ReadLine();
                     if (regex.IsMatch(URLInput))
                     {
                         Console.Write($"Replace {entry.URL} with {URLInput}? (Y/N)");
-                        switch (Console.ReadKey().Key)
+                        ConsoleKey yesNoInput = ConsoleKey.Decimal;
+                        while (yesNoInput != ConsoleKey.Y || yesNoInput != ConsoleKey.N)
+                        {
+                            yesNoInput = Console.ReadKey().Key;
+                        }
+                        switch (yesNoInput)
                         {
                             case ConsoleKey.Y:
                                 entry.URL = URLInput;
@@ -163,7 +182,7 @@ namespace HostsFileEditor
                     break;
                 case ConsoleKey.I:
                     Console.Clear();
-                    Console.Write($"Please enter the IP you would like to replace this entry?" + "\n");
+                    Console.Write($"Please enter the IP you would like to replace this entry." + "\n");
                     regex = new Regex(@"((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}|localhost)");
 
                     string IPInput = Console.ReadLine();
@@ -211,6 +230,7 @@ namespace HostsFileEditor
                     break;
                 default:
                     Console.WriteLine("invalid key");
+                    EntryDetails(entry);
                     break;
             }
         }
