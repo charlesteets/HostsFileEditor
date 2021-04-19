@@ -10,7 +10,7 @@
   
   https://drive.google.com/file/d/1HqK-y52n6ukE4XVfcrQu6XjXocmW7NPc/view?usp=sharing
   
-  Alternatively, you can download this entire project and run it in debug mode and play around with it.
+  Alternatively, you can download this entire project and run it through Visual Studio in debug mode and play around with it.
   
   Before running a .exe from anywhere, you should always verify the hash if possible! They are listed below ↓
   
