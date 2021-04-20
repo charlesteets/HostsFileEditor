@@ -1,5 +1,6 @@
 # Hosts File Editor 
 #### A .NET console application designed and created by Charles Teets.
+[Dev Log](https://charlesteetsdevlog.blogspot.com/search/label/HostsFileEditor)
 ## Easily map hostnames to IP addresses
   * Create new entries in hosts file
   * Modify existing entries by IP or hostname in hosts file
